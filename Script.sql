@@ -84,14 +84,15 @@ ORDER BY c.area DESC;
 --  Per ogni continente, selezionare il numero di nazioni con 
 -- area superiore ai 10.000 kmq ordinando i risultati a partire dal 
 -- continente che ne ha di più
-SELECT c.name, c.area 
-FROM countries c 
+SELECT c.name, c2.area, COUNT(c2.country_id) AS calcolo_continenti
+FROM continents c 
 INNER JOIN regions r 
-ON c.region_id  = r.region_id
-INNER JOIN continents c2 
-ON r.continent_id = c2.continent_id 
-WHERE c.area >10000
-ORDER BY c.area DESC;
+ON c.continent_id = r.continent_id 
+INNER JOIN countries c2 
+ON r.region_id = c2.region_id  
+WHERE c2.area >10000
+GROUP BY c.name
+ORDER by COUNT(c2.country_id) DESC;
 
 
 
